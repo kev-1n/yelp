@@ -30,7 +30,18 @@ export const RestaurantList = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    {restaurants.map(restaurant => {
+                        return (
+                           <tr key={restaurant.id}>
+                            <th>{restaurant.name}</th>
+                            <th>{restaurant.location}</th>
+                            <th>{"$".repeat(restaurant.price_range)}</th>
+                            <th>reviws</th>
+                            <th><button className="btn btn-warning">Update</button></th>
+                            <th><button className="btn btn-danger">Delete</button></th>
+                        </tr> 
+                        )})}
+                    {/* <tr>
                         <td>Mcdonal</td>
                         <td>NewYork</td>
                         <td>$$</td>
@@ -41,7 +52,7 @@ export const RestaurantList = (props) => {
                         <td>
                         <button className="btn btn-danger">Delete</button>
                         </td>
-                    </tr>
+                    </tr> */}
                 </tbody>
             </table>
         </div>
