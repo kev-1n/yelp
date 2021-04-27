@@ -20,7 +20,8 @@ export const RestaurantList = (props) => {
        fetchData();
     }, [])
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (e, id) => {
+        e.stopPropagation()
         try {
             const response = await RestaurantFinder.delete(`/${id}`)
             setRestaurants(restaurants.filter(restaurant => {
@@ -32,8 +33,13 @@ export const RestaurantList = (props) => {
         }
     }
 
-    const handleUpdate = (id) => {
+    const handleUpdate = (e, id) => {
+        e.stopPropagation()
         history.push(`/restaurants/${id}/update`)
+    };
+
+    const handleRestaurantSelect = (id) => {
+        history.push(`/restaurants/${id}`);
     }
     return (
         <div className="list-group">
@@ -49,15 +55,16 @@ export const RestaurantList = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {restaurants.map(restaurant => {
+                    {restaurants &&
+                    restaurants.map(restaurant => {
                         return (
-                           <tr key={restaurant.id}>
+                           <tr onClick={() => handleRestaurantSelect(restaurant.id)}key={restaurant.id}>
                             <th>{restaurant.name}</th>
                             <th>{restaurant.location}</th>
                             <th>{"$".repeat(restaurant.price_range)}</th>
                             <th>reviws</th>
-                            <th><button onClick={() => handleUpdate(restaurant.id)} className="btn btn-warning">Update</button></th>
-                            <th><button onClick={() => handleDelete(restaurant.id)} className="btn btn-danger">Delete</button></th>
+                            <th><button onClick={(e) => handleUpdate(e, restaurant.id)} className="btn btn-warning">Update</button></th>
+                            <th><button onClick={(e) => handleDelete(e, restaurant.id)} className="btn btn-danger">Delete</button></th>
                         </tr> 
                         )})}
                     {/* <tr>
