@@ -31,15 +31,21 @@ app.get("/api/v1/restaurants/:id", async (req, res) => {
     console.log(req.params.id);
 
     try {
-        const results = await db.query(
+        const restaurant = await db.query(
             "select * from restaurants where id = $1",
             [req.params.id]
         );
 
+        const reviews = await db.query(
+            "select * from reviews where restaurant_id = $1",
+            [req.params.id]
+        );
+            console.log("rows:", reviews.rows)
         res.status(200).json({
             status: "succes",
             data: {
-                restaurant: results.rows[0],
+                restaurant: restaurant.rows[0],
+                reviews: reviews.rows
             },
         });
     } catch (error) {
@@ -50,7 +56,7 @@ app.get("/api/v1/restaurants/:id", async (req, res) => {
 //Create a Restaurant
 
 app.post("/api/v1/restaurants", async (req, res) => {
-    console.log(req.body);
+    
 
     try {
         const results = await db.query(
@@ -92,8 +98,7 @@ app.put("/api/v1/restaurants/:id", async (req, res) => {
         console.log(error);
     }
 
-    console.log(req.params.id);
-    console.log(req.body);
+    
 });
 
 // Delete restaurant
@@ -114,5 +119,5 @@ app.delete("/api/v1/restaurants/:id", async (req, res) => {
 
 const port = process.env.PORT;
 app.listen(port, () => {
-    console.log(`serveris up on ${port}`);
+    console.log(`server is up on ${port}`);
 });
